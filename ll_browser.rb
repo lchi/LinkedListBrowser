@@ -3,15 +3,15 @@ require "nokogiri"
 
 class LinkedListNYC
   # gets latest from the link on the linkedlist home page
-  LATEST = Net::HTTP.get(URI("http://www.linkedlistnyc.org/")).
+  Latest = Net::HTTP.get(URI("http://www.linkedlistnyc.org/")).
     to_s.match(/archive\/issue_([\d]{3}).html/).to_s.match(/[\d]{3}/)[0].to_i
-  CACHE = "linkedlist_issues"
+  Cache = "linkedlist_issues"
 
   def self.method_missing(name, *args, &block)    
     if name.match(/issue_[\d]{3}/)
       issue = name.to_s.gsub(/issue_/, '')
-      if File.exists? "#{LinkedListNYC::CACHE}/#{issue}.html"
-        Nokogiri::HTML(File.new("#{LinkedListNYC::CACHE}/#{issue}.html"))
+      if File.exists? "#{LinkedListNYC::Cache}/#{issue}.html"
+        Nokogiri::HTML(File.new("#{LinkedListNYC::Cache}/#{issue}.html"))
       else
         Nokogiri::HTML(Net::HTTP.get(URI(
           "http://www.linkedlistnyc.org/archive/issue_#{issue}.html")))
@@ -26,15 +26,15 @@ class LinkedListNYC
   end
 
   def self.latest
-    self.send("issue_%03d" % LinkedListNYC::LATEST)
+    self.send("issue_%03d" % LinkedListNYC::Latest)
   end
 
   def self.download_and_cache
-    Dir.mkdir LinkedListNYC::CACHE unless Dir.exists? LinkedListNYC::CACHE
+    Dir.mkdir LinkedListNYC::Cache unless Dir.exists? LinkedListNYC::Cache
 
-    LinkedListNYC::LATEST.times do |i|
-      if !File.exists? "#{LinkedListNYC::CACHE}/%03d.html" % (i+1)
-        File.open("#{LinkedListNYC::CACHE}/%03d.html" % (i+1), "w") do |f| 
+    LinkedListNYC::Latest.times do |i|
+      if !File.exists? "#{LinkedListNYC::Cache}/%03d.html" % (i+1)
+        File.open("#{LinkedListNYC::Cache}/%03d.html" % (i+1), "w") do |f| 
           puts "downloading issue #{i+1}"
           f.write(Net::HTTP.get(
             URI("http://www.linkedlistnyc.org/archive/issue_%03d.html" % (i+1))))
