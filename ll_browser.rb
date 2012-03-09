@@ -1,12 +1,13 @@
 require "net/http"
-require "rexml/document"
+require "nokogiri"
 
 class LinkedListNYC
   LATEST = 56
   CACHE = "linkedlist_issues"
 
   def self.method_missing(name, *args, &block)    
-    LinkedListNYCIssue.new("#{LinkedListNYC::CACHE}/#{name.to_s.gsub(/issue_/, '')}.html")
+    html = Nokogiri::HTML(File.new(
+      "#{LinkedListNYC::CACHE}/#{name.to_s.gsub(/issue_/, '')}.html"))
   end
 
   def self.respond_to?(method)
@@ -31,14 +32,6 @@ class LinkedListNYC
   end
 end
 
-class LinkedListNYCIssue < File
-  def initialize *args
-    super *args
-  end
+#LinkedListNYC.download_and_cache
 
-end
-
-LinkedListNYC.download_and_cache
-five = LinkedListNYC.issue_005
-puts five.read
-
+#issue = LinkedListNYC.issue_005
