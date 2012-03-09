@@ -25,6 +25,10 @@ class LinkedListNYC
     method.to_s.match(/^issue_[\d]{3}/) || super
   end
 
+  def self.latest
+    self.send("issue_%03d" % LinkedListNYC::LATEST)
+  end
+
   def self.download_and_cache
     Dir.mkdir LinkedListNYC::CACHE unless Dir.exists? LinkedListNYC::CACHE
 
