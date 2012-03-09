@@ -1,11 +1,12 @@
-require 'net/http'
+require "net/http"
+require "rexml/document"
 
-class LinkedList
+class LinkedListNYC
   LATEST = 56
   CACHE = "linkedlist_issues"
 
   def self.method_missing(name, *args, &block)    
-    LinkedListIssue.new("#{LinkedList::CACHE}/#{name.to_s.gsub(/issue_/, '')}.html")
+    LinkedListNYCIssue.new("#{LinkedListNYC::CACHE}/#{name.to_s.gsub(/issue_/, '')}.html")
   end
 
   def self.respond_to?(method)
@@ -13,14 +14,14 @@ class LinkedList
   end
 
   def self.download_and_cache
-    Dir.mkdir LinkedList::CACHE unless Dir.exists? LinkedList::CACHE
+    Dir.mkdir LinkedListNYC::CACHE unless Dir.exists? LinkedListNYC::CACHE
 
-    if !File.exists? "#{LinkedList::CACHE}/%03d.html" % LinkedList::LATEST
-      LinkedList::LATEST.times do |i|
-        File.open("#{LinkedList::CACHE}/%03d.html" % (i+1), "w") do |f| 
+    if !File.exists? "#{LinkedListNYC::CACHE}/%03d.html" % LinkedListNYC::LATEST
+      LinkedListNYC::LATEST.times do |i|
+        File.open("#{LinkedListNYC::CACHE}/%03d.html" % (i+1), "w") do |f| 
           puts "downloading issue #{i+1}"
-          f.write(Net::HTTP.get 
-                  URI("http://www.linkedlistnyc.org/archive/issue_%03d.html" % (i+1)))
+          f.write(Net::HTTP.get(
+            URI("http://www.linkedlistnyc.org/archive/issue_%03d.html" % (i+1))))
         end
       end
 
@@ -30,14 +31,14 @@ class LinkedList
   end
 end
 
-class LinkedListIssue < File
+class LinkedListNYCIssue < File
   def initialize *args
     super *args
   end
 
 end
 
-LinkedList.download_and_cache
-five = LinkedList.issue_005
+LinkedListNYC.download_and_cache
+five = LinkedListNYC.issue_005
 puts five.read
 
