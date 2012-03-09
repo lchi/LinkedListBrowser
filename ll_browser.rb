@@ -3,7 +3,7 @@ require "nokogiri"
 
 class LinkedListNYC
   # gets latest from the link on the linkedlist home page
-  Latest = Net::HTTP.get(URI("http://www.linkedlistnyc.org/")).
+  Latest = open("http://www.linkedlistnyc.org/").read.
     to_s.match(/archive\/issue_([\d]{3}).html/).to_s.match(/[\d]{3}/)[0].to_i
   Cache = "linkedlist_issues"
 
