@@ -1,4 +1,4 @@
-require "net/http"
+require "open-uri"
 require "nokogiri"
 
 class LinkedListNYC
@@ -13,8 +13,7 @@ class LinkedListNYC
       if File.exists? "#{LinkedListNYC::Cache}/#{issue}.html"
         Nokogiri::HTML(File.new("#{LinkedListNYC::Cache}/#{issue}.html"))
       else
-        Nokogiri::HTML(Net::HTTP.get(URI(
-          "http://www.linkedlistnyc.org/archive/issue_#{issue}.html")))
+        Nokogiri::HTML(open("http://www.linkedlistnyc.org/archive/issue_#{issue}.html"))
       end
     else
       super
@@ -36,8 +35,7 @@ class LinkedListNYC
       if !File.exists? "#{LinkedListNYC::Cache}/%03d.html" % (i+1)
         File.open("#{LinkedListNYC::Cache}/%03d.html" % (i+1), "w") do |f| 
           puts "downloading issue #{i+1}"
-          f.write(Net::HTTP.get(
-            URI("http://www.linkedlistnyc.org/archive/issue_%03d.html" % (i+1))))
+          f.write(open("http://www.linkedlistnyc.org/archive/issue_%03d.html" % (i+1)).read)
         end
       end
     end
