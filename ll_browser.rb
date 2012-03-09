@@ -8,8 +8,17 @@ class LinkedListNYC
   CACHE = "linkedlist_issues"
 
   def self.method_missing(name, *args, &block)    
-    html = Nokogiri::HTML(File.new(
-      "#{LinkedListNYC::CACHE}/#{name.to_s.gsub(/issue_/, '')}.html"))
+    if name.match(/issue_[\d]{3}/)
+      issue = name.to_s.gsub(/issue_/, '')
+      if File.exists? "#{LinkedListNYC::CACHE}/#{issue}.html"
+        Nokogiri::HTML(File.new("#{LinkedListNYC::CACHE}/#{issue}.html"))
+      else
+        Nokogiri::HTML(Net::HTTP.get(URI(
+          "http://www.linkedlistnyc.org/archive/issue_#{issue}.html")))
+      end
+    else
+      super
+    end
   end
 
   def self.respond_to?(method)
