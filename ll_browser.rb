@@ -22,7 +22,7 @@ class LinkedListNYC
   end
 
   def self.respond_to?(method)
-    method.to_s.match(/^issue_\d{3}/) || super
+    method.to_s.match(/^issue_[\d]{3}/) || super
   end
 
   def self.download_and_cache
