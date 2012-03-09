@@ -1,7 +1,7 @@
 ll-browser
 ==========
 
-A DSL for accessing LinkedListNYC entries.  What is the (LinkedList)[http://www.linkedlistnyc.org]?
+A Ruby Domain Specific Language (DSL) for accessing LinkedListNYC entries.  What is the [LinkedList](http://www.linkedlistnyc.org)?
 
 Usage
 -----
