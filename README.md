@@ -20,7 +20,9 @@ Usage
 
 Generally...
 
-	LinkedListNYC.issue_<issueNo> where issueNo is a three digit number
+```ruby
+LinkedListNYC.issue_<issueNo> where issueNo is a three digit number
+```
 
 This will give you a ``Nokogiri::HTML::Document`` which you can then manipulate.  Access individual entries this way.  To download and cache entries use ``LinkedListNYC.download_and_cache``.  Downloaded docs will be stored as ``./linkedlist_issues/0xx.html``.
 
