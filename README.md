@@ -6,22 +6,31 @@ A Ruby Domain Specific Language (DSL) for accessing LinkedListNYC entries.  What
 Usage
 -----
 
-	pry(main)> issue = LinkedListNYC.issue_005 # gets you issue # 5
-	pry(main)> issue.css('a').map { |x| x.attributes['href'].to_s }
-	 => ["*|ARCHIVE|*",	      
-	  "http://www.meetup.com/openny/events/16755815/",
-	  "http://www.meetup.com/PythonBrooklyn/events/16931174/",
-	  "http://www.meetup.com/lisp-59/events/16908923/",
-	  "http://en.wikipedia.org/wiki/Wikipedia:Meetup/NYC",
-	  "http://www.nycruby.org/events/16179487/",
-	  "mailto:tips@linkedlistnyc.org",
-	  "http://twitter.com/linkedlistnyc",
-	  "*|UNSUB|*"]
-
-Generally...
+Example:
 
 ```ruby
-LinkedListNYC.issue_<issueNo> where issueNo is a three digit number
+issue = LinkedListNYC.issue_005 # gets you issue # 5
+issue.css('a').map { |x| x.attributes['href'].to_s }
+```
+
+gives you:
+
+```
+=> ["*|ARCHIVE|*",	      
+  "http://www.meetup.com/openny/events/16755815/",
+  "http://www.meetup.com/PythonBrooklyn/events/16931174/",
+  "http://www.meetup.com/lisp-59/events/16908923/",
+  "http://en.wikipedia.org/wiki/Wikipedia:Meetup/NYC",
+  "http://www.nycruby.org/events/16179487/",
+  "mailto:tips@linkedlistnyc.org",
+  "http://twitter.com/linkedlistnyc",
+  "*|UNSUB|*"]
+```
+
+In general:
+
+```
+LinkedListNYC.issue_<issueNo> # where issueNo is a three digit number
 ```
 
 This will give you a ``Nokogiri::HTML::Document`` which you can then manipulate.  Access individual entries this way.  To download and cache entries use ``LinkedListNYC.download_and_cache``.  Downloaded docs will be stored as ``./linkedlist_issues/0xx.html``.
