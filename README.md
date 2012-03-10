@@ -10,7 +10,7 @@ Example:
 
 ```ruby
 issue = LinkedListNYC.issue_005 # gets you issue # 5
-issue.css('a').map { |x| x.attributes['href'].to_s }
+issue.css('a').map { |elem| elem['href'] }
 ```
 
 gives you:
